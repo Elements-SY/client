@@ -1,6 +1,6 @@
 export default ({ app }) => {
   // console.log(app)
-  var getToken = false
+  var getToken = true
   app.router.beforeEach((to, from, next) => {
     if (process.client) {
       if (to.meta.requireAuth) {

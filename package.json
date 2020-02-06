@@ -15,5 +15,10 @@
     "element-ui": "^2.4.11",
     "@nuxtjs/axios": "^5.3.6"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "autoprefixer": "^9.7.4",
+    "mint-ui": "^2.2.13",
+    "postcss-px-to-viewport": "^1.1.1",
+    "postcss-px2rem": "^0.3.0"
+  }
 }

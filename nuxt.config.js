@@ -1,9 +1,6 @@
-// import route from './plugins'
+import routes from './router'
 export default {
   mode: 'universal',
-  /*
-  ** Headers of the page
-  */
   head: {
     title: process.env.npm_package_name || '',
     meta: [
@@ -13,66 +10,26 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+
+    script: [
+      { innerHTML: require('./plugins/postcss-px-to-viewport'), type: 'text/javascript', charset: 'utf-8' }
     ]
   },
-  /*
-  ** Customize the progress-bar color
-  */
   loading: { color: '#fff' },
-  /*
-  ** Global CSS
-  */
   css: [
-    'element-ui/lib/theme-chalk/index.css'
+    'element-ui/lib/theme-chalk/index.css',
+    'mint-ui/lib/style.css'
   ],
   router: { //中间件允许您定义一个自定义函数运行在一个页面或一组页面渲染之前。
-    // middleware: ['authorities'],
-    // base: '/',
-    // router: routes,
-    extendRoutes (routes, resolve) {
-      routes.splice(0, routes.length,
-        {
-          path: "*",
-          component: resolve(__dirname, 'pages/404.vue'),
-          meta: {
-            requireAuth: true
-          }
-        },
-        {
-          path: "/login",
-          name: "login",
-          component: resolve(__dirname, 'pages/login.vue')
-        },
-        {
-          path: "/register",
-          name: "register",
-          component: resolve(__dirname, 'pages/register.vue')
-        },
-        {
-          path: "/restAccount",
-          name: "restAccount",
-          component: resolve(__dirname, 'pages/restAccount.vue')
-        },
-        {
-          path: "/home",
-          component: resolve(__dirname, 'pages/index.vue'),
-          meta: {
-            requireAuth: true
-          }
-        })
-    }
+    extendRoutes: routes
   },
-  /*
-  ** Plugins to load before mounting the App
-  */
   plugins: [
     '@/plugins/element-ui',
+    { src: '@/plugins/mint-ui', ssr: true },
     '@/plugins/auth',
     // { src: '@/plugins', ssr: true },
   ],
-  /*
-  ** Nuxt.js dev-modules
-  */
   buildModules: [
   ],
   /*
@@ -96,6 +53,21 @@ export default {
     /*
     ** You can extend webpack config here
     */
+
+    postcss: [
+      require('postcss-px-to-viewport')({
+        viewportWidth: 750,  //视窗的宽度
+        viewportHeight: 1334,  //视窗的高度
+        unitPrecision: 2, //将px转化为视窗单位值的小数位数
+        viewportUnit: 'vw', //指定要转换成的视窗单位值
+        selectorBlackList: ['.ignore', '.hairlines'],  //指定不转换视窗单位值得类，可以自定义，可以无限添加
+        minPixelValue: 1,  //小于等于1px不转换为视窗单位
+        mediaQuery: false  //允许在媒体查询中使用px
+      }),
+      // require('autoprefixer')({
+      //   browsers: ['Android >= 4.0', 'iOS >= 7']
+      // })
+    ],
     extend (config, ctx) {
     }
   }

@@ -1,62 +1,14 @@
-const Index = () => import('@/pages') // 首页
-const Login = () => import('@/pages/login') // 用户登录
-const register = () => import('@/pages/register') // 账号注册
-const restAccount = () => import('@/pages/restAccount') // 重置帐号信息(忘记密码)
-const notFund = () => import('@/pages/404') // 404
+'use strict';
 
-export default [
-  {
-    path: "*",
-    component: notFund,
-    meta: {
-      requireAuth: true
-    }
-  },
-  {
-    path: "/login",
-    name: "login",
-    component: Login
-  },
-  {
-    path: "/register",
-    name: "register",
-    component: register,
-    meta: {
-      requireAuth: true
-    }
-  },
-  {
-    path: "/restAccount",
-    name: "restAccount",
-    component: restAccount
-  },
-  {
-    path: "/",
-    component: Index,
-    meta: {
-      requireAuth: true
-    }
-  }
-]
+var postcss = require('postcss');
+var Px2rem = require('px2rem');
 
-// const iterator = (list) => {
-//   for (let item in list) {
-//     for (const m in menus) {
-//       if ((list[item].name === menus[m].name) && (list[item].path === menus[m].path)) {
-//         console.log((list[item].name === menus[m].name) && (list[item].path === menus[m].path));
-//         list[item].meta = menus[m].meta;
-//         list[item].meta.requireAuth = true;
-//       }
-//     }
-//     if (list[item].children && list[item].children.length > 0) {
-//       iterator(list[item].children);
-//     } else {
-//       return list;
-//     };
-//   }
-// };
-
-// export default (routes, resolve) => {
-//   routes = iterator(routes);
-//   console.log(routes);
-// }
+module.exports = postcss.plugin('postcss-px2rem', function (options) {
+  return function (css, result) {
+    var oldCssText = css.toString();
+    var px2remIns = new Px2rem(options);
+    var newCssText = px2remIns.generateRem(oldCssText);
+    var newCssObj = postcss.parse(newCssText);
+    result.root = newCssObj;
+  };
+});

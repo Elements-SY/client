@@ -10,6 +10,12 @@
         <a href="javascript:;">{{item.name}}</a>
       </li>
     </ul>
+    <mt-button type="default">default</mt-button>
+    <mt-button type="primary">primary</mt-button>
+    <mt-button type="danger">danger</mt-button>
+    <!-- <section>
+      <h2>{{userInfo[0].author.loginname}}</h2>
+    </section>-->
   </div>
 </template>
 <script>
@@ -35,7 +41,8 @@ export default {
         page: 1,
         tab: 'job',
         limit: 1
-      }
+      },
+      userInfo: []
     }
   },
   created () {
@@ -50,7 +57,13 @@ export default {
     },
     sum () {
       topics(this.params).then(res => {
-        console.log(res)
+        // console.log(res)
+        if (res.status === 200) {
+          if (res.data.data.length > 0) {
+            this.userInfo = res.data.data
+            console.log(this.userInfo)
+          }
+        }
       }).catch(error => {
         console.log(error)
       })
@@ -69,5 +82,13 @@ li {
   flex: 1;
   text-align: center;
   line-height: 80px;
+  list-style: none;
+}
+a {
+  font-size: 20px;
+}
+img {
+  width: 90px;
+  height: 90px;
 }
 </style>
